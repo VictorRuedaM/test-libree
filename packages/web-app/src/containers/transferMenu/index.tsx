@@ -15,9 +15,10 @@ import {
   NewWithDraw,
   ProvideLiquidity,
   SwapTokens,
+  TestTransferView,
 } from 'utils/paths';
 
-import FormModal from './FormModal';
+
 
 type Action =
   | 'deposit_assets'
@@ -25,7 +26,8 @@ type Action =
   | 'credit_delegation'
   | 'swap_tokens'
   | 'provide_liquidity'
-  | 'budget_allocation';
+  | 'budget_allocation'
+  | 'form_test';
 
 const TransferMenu: React.FC = () => {
   const {isTransferOpen, close, open} = useGlobalModalContext();
@@ -37,13 +39,7 @@ const TransferMenu: React.FC = () => {
 
   const [isModalForm, setIsModalForm] = useState(false);
 
-  // Function that changes the state of isModalForm and executes the Wallet connection modal when the form modal is closed
-  const handleForm = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
 
-    setIsModalForm(!isModalForm);
-    e && isModalForm ? handleClick('deposit_assets') : null;
-  };
   const handleClick = (action: Action) => {
     trackEvent('newTransfer_modalBtn_clicked', {
       dao_address: dao,
@@ -51,7 +47,7 @@ const TransferMenu: React.FC = () => {
     });
     setIsModalForm(false);
 
-    if (!isConnected) {
+    if (isConnected) {
       open('wallet');
     } else if (action === 'deposit_assets') {
       open('deposit');
@@ -63,6 +59,9 @@ const TransferMenu: React.FC = () => {
       navigate(generatePath(ProvideLiquidity, {network: network, dao: dao}));
     } else if (action === 'budget_allocation') {
       navigate(generatePath(BudgetAllocation, {network: network, dao: dao}));
+    } else if (action === 'form_test') {
+      // Navigate to test-transfer page
+      navigate(generatePath(TestTransferView, {network: network, dao: dao}));
     } else {
       navigate(generatePath(NewWithDraw, {network: network, dao: dao}));
     }
@@ -74,63 +73,55 @@ const TransferMenu: React.FC = () => {
       <ModalBottomSheetSwitcher
         isOpen={isTransferOpen}
         onClose={() => {
-          close('default'), setIsModalForm(!isModalForm);
+          close('default');
         }}
         title={t('TransferModal.newTransfer')}
       >
-        {/* When isModalForm is false, the list modal is executed, but when it changes to true, the FormModal
-          component is executed with the form passing the handleForm function, so when the form modal is closed,
-          it continues with the Wallet connection modal */}
-        {isModalForm ? (
-          <Container>
-            <FormModal handleForm={handleForm} />
-          </Container>
-        ) : (
-          <Container>
-            <ListItemAction
-              title={'Test transfer'}
-              subtitle={'Just a test transfer'}
-              iconRight={<IconChevronRight />}
-              onClick={handleForm}
-            />
-            <ListItemAction
-              title={t('modal.deposit.headerTitle')}
-              subtitle={t('modal.deposit.headerDescription')}
-              iconRight={<IconChevronRight />}
-              onClick={() => handleClick('deposit_assets')}
-            />
-            <ListItemAction
-              title={t('TransferModal.item2Title')}
-              subtitle={t('TransferModal.item2Subtitle')}
-              iconRight={<IconChevronRight />}
-              onClick={() => handleClick('withdraw_assets')}
-            />
-            <ListItemAction
-              title={t('TransferModal.creditDelegation')}
-              subtitle={t('TransferModal.creditSubtitle')}
-              iconRight={<IconChevronRight />}
-              onClick={() => handleClick('credit_delegation')}
-            />
-            <ListItemAction
-              title={t('TransferModal.swapTokens')}
-              subtitle={t('TransferModal.swapSubtitle')}
-              iconRight={<IconChevronRight />}
-              onClick={() => handleClick('swap_tokens')}
-            />
-            <ListItemAction
-              title={t('TransferModal.provideLiquidity')}
-              subtitle={t('TransferModal.provideSubtitle')}
-              iconRight={<IconChevronRight />}
-              onClick={() => handleClick('provide_liquidity')}
-            />
-            <ListItemAction
-              title={t('TransferModal.budgetAllocation')}
-              subtitle={t('TransferModal.budgetSubtitle')}
-              iconRight={<IconChevronRight />}
-              onClick={() => handleClick('budget_allocation')}
-            />
-          </Container>
-        )}
+        <Container>
+          {/* List action form-test */}
+          <ListItemAction
+            title={'Test transfer'}
+            subtitle={'Just a test transfer'}
+            iconRight={<IconChevronRight />}
+            onClick={() => handleClick('form_test')}
+          />
+          <ListItemAction
+            title={t('modal.deposit.headerTitle')}
+            subtitle={t('modal.deposit.headerDescription')}
+            iconRight={<IconChevronRight />}
+            onClick={() => handleClick('deposit_assets')}
+          />
+          <ListItemAction
+            title={t('TransferModal.item2Title')}
+            subtitle={t('TransferModal.item2Subtitle')}
+            iconRight={<IconChevronRight />}
+            onClick={() => handleClick('withdraw_assets')}
+          />
+          <ListItemAction
+            title={t('TransferModal.creditDelegation')}
+            subtitle={t('TransferModal.creditSubtitle')}
+            iconRight={<IconChevronRight />}
+            onClick={() => handleClick('credit_delegation')}
+          />
+          <ListItemAction
+            title={t('TransferModal.swapTokens')}
+            subtitle={t('TransferModal.swapSubtitle')}
+            iconRight={<IconChevronRight />}
+            onClick={() => handleClick('swap_tokens')}
+          />
+          <ListItemAction
+            title={t('TransferModal.provideLiquidity')}
+            subtitle={t('TransferModal.provideSubtitle')}
+            iconRight={<IconChevronRight />}
+            onClick={() => handleClick('provide_liquidity')}
+          />
+          <ListItemAction
+            title={t('TransferModal.budgetAllocation')}
+            subtitle={t('TransferModal.budgetSubtitle')}
+            iconRight={<IconChevronRight />}
+            onClick={() => handleClick('budget_allocation')}
+          />
+        </Container>
       </ModalBottomSheetSwitcher>
     </>
   );

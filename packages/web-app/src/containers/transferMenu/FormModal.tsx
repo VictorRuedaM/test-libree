@@ -1,27 +1,34 @@
+import {WalletMenu} from 'containers/walletMenu';
 import React, {useEffect, useState} from 'react';
-
-interface Props {
-  handleForm: (params: any) => any;
-}
 
 /**
  *
- * FormModal executes the modal of the form with two validated fields with warnings so that they are not sent empty,
+ * FormModal executes the form component in test-transfer page with two validated fields with warnings so that they are not sent empty,
  * the button is disabled as long as the inputs are not filled, once data is entered the button is enabled
  * and you can click to go to the next Wallet modal connection
  *
  */
-function FormModal({handleForm}: Props) {
+function FormModal() {
   const [dataForm, setDataForm] = useState({
     testName: '',
     testNumber: '',
   });
 
+  const [wallet, setWallet] = useState(false);
   const [dataOk, setDataOk] = useState(false);
   const [edit, setEdit] = useState({
     testName: 'ok',
     testNumber: 'ok',
   });
+
+  const handleModalWallet = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setWallet(true);
+    setDataForm({
+      testName: '',
+      testNumber: '',
+    });
+  };
 
   useEffect(() => {
     if (dataForm.testName !== '' && dataForm.testNumber !== '') {
@@ -39,16 +46,22 @@ function FormModal({handleForm}: Props) {
   };
 
   return (
-    <div>
-      <form onSubmit={e => handleForm(e)}>
-        <div className="h-10">
-          <label className=" w-auto ml-5">Test name</label>
+    <div className="bg-white border border-solid border-gray-300 rounded-xl ">
+      {
+        wallet ? <WalletMenu /> : null
+      }
+      <div className="border-b border-gray-300 ">
+        <h2 className="pb-2 my-2 ml-3">Test Transfer</h2>
+      </div>
+      <form onSubmit={e => handleModalWallet(e)} className="p-3">
+        <div className="h-15">
+          <label className=" w-auto mt-5">Test name</label>
           <input
             type="text"
             name="testName"
             value={dataForm.testName}
             placeholder="Enter a name"
-            className="w-auto h-5  border-border-grey rounded-lg mx-3 p-2"
+            className="border border-solid border-gray-300 w-full h-5 rounded-lg p-2 mt-2"
             onChange={e => handleChange(e)}
           />
           {edit.testName === '' ? (
@@ -57,14 +70,14 @@ function FormModal({handleForm}: Props) {
             </div>
           ) : null}
         </div>
-        <div className="h-10">
-          <label className=" w-auto ml-5">Test number</label>
+        <div className="h-16">
+          <label className=" w-auto">Test number</label>
           <input
             type="number"
             name="testNumber"
             value={dataForm.testNumber}
-            placeholder="Enter a number "
-            className="w-auto h-5  border-border-grey rounded-lg mx-1 p-2 "
+            placeholder="0"
+            className="border border-solid border-gray-300 w-full h-5 rounded-lg p-2 mt-2"
             onChange={e => handleChange(e)}
           />
           {edit.testNumber === '' ? (
@@ -75,13 +88,13 @@ function FormModal({handleForm}: Props) {
         </div>
 
         {dataOk ? (
-          <button className="bg-primary-400 px-44 py-1.5 rounded-xl text-white ml-1">
+          <button className="bg-primary-400 px-44 py-1.5 rounded-xl text-white">
             Next
           </button>
         ) : (
           <button
             disabled
-            className="bg-primary-100 px-44 py-1.5 rounded-xl text-white ml-1 focus:outline-none disabled:opacity-75"
+            className="bg-primary-100 px-44 py-1.5 rounded-xl text-white focus:outline-none"
           >
             Next
           </button>

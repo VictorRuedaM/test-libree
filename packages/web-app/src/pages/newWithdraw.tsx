@@ -54,6 +54,7 @@ export const defaultValues = {
 };
 
 const NewWithdraw: React.FC = () => {
+
   const [showTxModal, setShowTxModal] = useState(false);
 
   const {data: daoDetails, isLoading: detailsLoading} = useDaoDetailsQuery();

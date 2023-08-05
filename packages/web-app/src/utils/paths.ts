@@ -23,6 +23,8 @@ export const NewCreditDelegation = '/daos/:network/:dao/finance/credit-delegatio
 export const SwapTokens = '/daos/:network/:dao/finance/swap';
 export const ProvideLiquidity = '/daos/:network/:dao/finance/provide-liquidity';
 export const BudgetAllocation = '/daos/:network/:dao/finance/budget-allocation';
+// To test-transfer page
+export const TestTransferView = '/daos/:network/:dao/finance/test-transfer';
 
 export const Proposal = '/daos/:network/:dao/governance/proposals/:id';
 export const NewProposal = '/daos/:network/:dao/governance/new-proposal';

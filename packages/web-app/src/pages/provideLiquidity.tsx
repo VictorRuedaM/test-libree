@@ -9,6 +9,8 @@ import { PluginTypes } from 'hooks/usePluginClient';
 import { usePluginSettings } from 'hooks/usePluginSettings';
 import ProvideLiquidityStepper from 'containers/provideLiquidityStepper';
 
+import { classNames } from '../utils/index';
+
 export type ProvideLiquidityAction = {
     name: string; // This indicates the type of action;
 };
@@ -22,6 +24,7 @@ export const defaultValues = {
 };
 
 const ProvideLiquidity: React.FC = () => {
+
     const [showTxModal, setShowTxModal] = useState(false);
 
     const { data: daoDetails, isLoading: detailsLoading } = useDaoDetailsQuery();
@@ -49,6 +52,8 @@ const ProvideLiquidity: React.FC = () => {
 
     return (
         <>
+
+
             <FormProvider {...formMethods}>
                 <ActionsProvider daoId={daoDetails?.address as string}>
                     <CreateProposalProvider

@@ -50,6 +50,7 @@ const ProvideLiquidityStepper: React.FC<ProvideLiquidityStepperProps> = ({
 
     return (
         <>
+
             <FullScreenStepper
                 wizardProcessName={t('provideLiquidity.title')}
                 navLabel={t('provideLiquidity.subtitle')}
@@ -106,6 +107,7 @@ const ProvideLiquidityStepper: React.FC<ProvideLiquidityStepperProps> = ({
                 >
                     <ReviewWithoutLinks />
                 </Step>
+
             </FullScreenStepper>
         </>
     );
